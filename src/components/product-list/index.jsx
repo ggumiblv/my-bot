@@ -24,10 +24,10 @@ const getTotalPrice = (items) => {
 
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
-  const { tg } = useTelegram();
+  const { tg, queryId } = useTelegram();
 
   const onAdd = (product) => {
-    const alreadyAdded = addedItems.find((item) => item.id !== product.id);
+    const alreadyAdded = addedItems.find((item) => item.id === product.id);
 
     let newItems = [];
     if (alreadyAdded) {
@@ -48,10 +48,35 @@ const ProductList = () => {
     }
   };
 
+  const onSendData = useCallback(() => {
+    //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId
+    };
+    // tg.sendData(JSON.stringify(data)); //отправляем данные
+
+    fetch('http://localhost:8000', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  }, []);
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', onSendData);
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData);
+    };
+  }, [onSendData]);
+
   return (
     <div className={'list'}>
       {products.map((item) => (
-        <ProductItem product={item} onAdd={onAdd} className={'item'} />
+        <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
       ))}
     </div>
   );
