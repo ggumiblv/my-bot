@@ -1,6 +1,6 @@
-import Button from '../Button/Button';
+import Button from '../button';
 
-import './ProductItem.css';
+import './index.css';
 
 const ProductItem = ({ product, className, onAdd }) => {
   const onAddHandler = () => {

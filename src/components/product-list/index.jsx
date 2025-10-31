@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useTelegram } from '../../hooks/useTelegram';
+import { useTelegram } from '../../assets/hooks/useTelegram';
 
-import ProductItem from '../ProductItem/ProductItem';
+import ProductItem from '../product-item';
 
-import './ProductList.css';
+import './index.css';
 
 const products = [
   { id: '1', title: 'Джинсы', price: 5000, description: 'Синего цвета, прямые' },
