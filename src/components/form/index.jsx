@@ -10,12 +10,13 @@ const Form = () => {
   const { tg } = useTelegram();
 
   const onSendData = useCallback(() => {
+    //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
     const data = {
       country,
       street,
       subject
     };
-    tg.sendData(JSON.stringify(data));
+    tg.sendData(JSON.stringify(data)); //отправляем данные
   }, [country, street, subject]);
 
   useEffect(() => {
