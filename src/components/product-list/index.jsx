@@ -26,6 +26,31 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const { tg, queryId } = useTelegram();
 
+  const onSendData = useCallback(() => {
+    //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId
+    };
+    // tg.sendData(JSON.stringify(data)); //отправляем данные
+
+    fetch('http://localhost:8000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  }, [addedItems]);
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', onSendData);
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData);
+    };
+  }, [onSendData]);
+
   const onAdd = (product) => {
     const alreadyAdded = addedItems.find((item) => item.id === product.id);
 
@@ -47,31 +72,6 @@ const ProductList = () => {
       });
     }
   };
-
-  const onSendData = useCallback(() => {
-    //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
-    const data = {
-      products: addedItems,
-      totalPrice: getTotalPrice(addedItems),
-      queryId
-    };
-    // tg.sendData(JSON.stringify(data)); //отправляем данные
-
-    fetch('http://localhost:8000', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-  }, []);
-
-  useEffect(() => {
-    tg.onEvent('mainButtonClicked', onSendData);
-    return () => {
-      tg.offEvent('mainButtonClicked', onSendData);
-    };
-  }, [onSendData]);
 
   return (
     <div className={'list'}>
