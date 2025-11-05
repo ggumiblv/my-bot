@@ -22,7 +22,7 @@ const getTotalPrice = (items) => {
   }, 0);
 };
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = 'https://my-bot-backend-1.onrender.com';
 
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
