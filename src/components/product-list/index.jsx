@@ -22,9 +22,13 @@ const getTotalPrice = (items) => {
   }, 0);
 };
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const { tg, queryId } = useTelegram();
+
+  console.log(apiUrl);
 
   const onSendData = useCallback(() => {
     //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
@@ -35,7 +39,7 @@ const ProductList = () => {
     };
     // tg.sendData(JSON.stringify(data)); //отправляем данные
 
-    fetch('http://localhost:8000/web-data', {
+    fetch(`${apiUrl}/web-data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
