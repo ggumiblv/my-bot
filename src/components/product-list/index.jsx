@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react';
-
 import { useTelegram } from '../../assets/hooks/useTelegram';
 
 import ProductItem from '../product-item';
@@ -29,23 +28,25 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const { tg, queryId } = useTelegram();
 
+  console.log(apiUrl);
+
   const onSendData = useCallback(() => {
+    //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
     const data = {
       products: addedItems,
       totalPrice: getTotalPrice(addedItems),
       queryId
     };
+    // tg.sendData(JSON.stringify(data)); //отправляем данные
 
-    if (queryId) {
-      fetch(`${apiUrl}/web-data`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-    } else {
-      console.log('Локальный тест:', data);
-    }
-  }, [addedItems, queryId]);
+    fetch(`${apiUrl}/web-data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  }, [addedItems]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
