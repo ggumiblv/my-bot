@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useTelegram } from '../../assets/hooks/useTelegram';
+import { Link } from 'react-router-dom';
 
 import ProductItem from '../product-item';
 
@@ -82,7 +83,7 @@ const ProductList = () => {
       {products.map((item) => (
         <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
       ))}
-      <button onClick={onSendData}>send</button>
+      <Link to="/login">login</Link>
     </div>
   );
 };
