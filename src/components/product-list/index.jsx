@@ -29,8 +29,6 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const { tg, queryId } = useTelegram();
 
-  console.log(apiUrl);
-
   const onSendData = useCallback(() => {
     //useCallback здесь используется чтобы сохранить ссылку на функцию и чтобы после перерисовки она не создавалась снова
     const data = {
