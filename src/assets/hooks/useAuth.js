@@ -12,7 +12,7 @@ export const useAuth = () => {
       const response = await fetch(`${apiUrl}/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(initData)
+        body: JSON.stringify({ initData })
       });
 
       const data = await response.json();
